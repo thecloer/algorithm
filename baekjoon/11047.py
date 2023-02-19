@@ -3,9 +3,7 @@
 
 # My solution
 n, k = map(int, input().split())
-values = []
-for _ in range(n):
-    values.append(int(input()))
+values = [int(input()) for _ in range(n)]
 values.reverse()
 
 result = 0
