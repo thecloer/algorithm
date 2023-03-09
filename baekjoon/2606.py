@@ -1,5 +1,5 @@
 # https://www.acmicpc.net/problem/2606
-# 그래프, DFS, BFS
+# graph, DFS, BFS - 바이러스
 
 # My solution
 def dfs(graph, visited, node):

@@ -1,5 +1,5 @@
-# https://www.acmicpc.net/problem/1931
-# graph, BFS - 회의실 배정
+# https://www.acmicpc.net/problem/2178
+# graph, BFS - 미로탐색
 
 # My solution
 import sys

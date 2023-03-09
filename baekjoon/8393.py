@@ -1,5 +1,5 @@
 # https://www.acmicpc.net/problem/8393
-# 수학, 구현
+# 수학, 구현 - 합
 
 # My solution
 n = int(input())

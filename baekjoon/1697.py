@@ -1,5 +1,5 @@
 # https://www.acmicpc.net/problem/1697
-# 그래프, BFS - 숨박꼭질
+# graph, BFS - 숨박꼭질
 
 # My solution
 import sys

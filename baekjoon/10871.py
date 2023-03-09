@@ -1,5 +1,5 @@
 # https://www.acmicpc.net/problem/10871
-# 구현
+# 구현 - k보다 작은 수 
 
 # My solution
 import sys
