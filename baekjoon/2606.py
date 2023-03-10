@@ -16,7 +16,7 @@ n = int(Io())
 m = int(Io())
 graph = [[] for _ in range(n+1)]
 for _ in range(m):
-    a, b = map(int, Io().rstrip().split())
+    a, b = map(int, Io().split())
     graph[a].append(b)
     graph[b].append(a)
 

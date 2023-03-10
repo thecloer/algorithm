@@ -5,7 +5,7 @@
 import sys
 Io = sys.stdin.readline
 n, x = map(int, Io().split())
-a = list(map(int, Io().rstrip().split()))
+a = list(map(int, Io().split()))
 
 result = []
 for i in a:
