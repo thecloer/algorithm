@@ -1,11 +1,12 @@
 class Solution {
     public int solution(int n) {
-        String a = Integer.toString(n, 3);
-        String reversed = "";
-        
-        for(int i=a.length() -1; i >= 0; i--)
-            reversed += a.charAt(i);
-        
-        return Integer.parseInt(reversed, 3);
+        String a = "";
+
+        while(n > 0){
+            a += (n % 3);
+            n /= 3;
+        }
+
+        return Integer.parseInt(a,3);
     }
 }
