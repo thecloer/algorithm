@@ -30,7 +30,7 @@ class Solution {
         if(number == 0 || number == 1 || number % 2 == 0)
             return false;
         
-        for(int i=3; i<=(int)Math.sqrt(number); i+=2)
+        for(int i=3; i <= Math.sqrt(number); i+=2)
             if(number % i == 0)
                 return false;
         
