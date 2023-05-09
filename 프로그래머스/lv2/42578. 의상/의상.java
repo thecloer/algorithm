@@ -8,9 +8,8 @@ class Solution {
         for(String[] cloth:clothes)         
             map.put(cloth[1], map.getOrDefault(cloth[1],0) + 1);
         
-        Iterator<String> keys = map.keySet().iterator();
-        while(keys.hasNext())
-            answer *= map.get(keys.next()) + 1;
+        for(int value: map.values())
+            answer *= value + 1;
         
         
         return answer - 1;
