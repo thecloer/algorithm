@@ -3,7 +3,8 @@ class Solution {
     public int[] solution(int n, String[] words) {
         int[] answer = new int[2];
         Set<String> wordPool = new HashSet<String>();
-        int i = 0;
+        wordPool.add(words[0]);
+        int i = 1;
         while(i < words.length){
             if(wordPool.contains(words[i]) || isSequence(words, i)){
                    answer[0] = i % n + 1;
@@ -18,6 +19,6 @@ class Solution {
     }
     
     private boolean isSequence(String[] words, int i){
-        return i > 0 && words[i-1].charAt(words[i-1].length()-1) != words[i].charAt(0);
+        return words[i-1].charAt(words[i-1].length()-1) != words[i].charAt(0);
     }
 }
