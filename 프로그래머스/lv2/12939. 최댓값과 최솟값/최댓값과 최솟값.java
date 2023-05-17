@@ -1,14 +1,14 @@
 class Solution {
     public String solution(String s) {
         String[] strArray = s.split(" ");
-        int minIdx = 0;
-        int maxIdx = 0;
-        for(int i=0; i<strArray.length; i++){
-            if(Integer.parseInt(strArray[i])<Integer.parseInt(strArray[minIdx]))
-                minIdx = i;
-            else if(Integer.parseInt(strArray[i])>Integer.parseInt(strArray[maxIdx]))maxIdx = i;
+        int min, max, n;
+        min = max = Integer.parseInt(strArray[0]);
+        for(String str:strArray){
+            n = Integer.parseInt(str);
+            if(n < min) min = n;
+            else if(n > max) max = n;
         }
         
-        return strArray[minIdx] + " " + strArray[maxIdx];
+        return min + " " + max;
     }
 }
