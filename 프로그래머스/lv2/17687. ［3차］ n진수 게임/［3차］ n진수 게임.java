@@ -5,12 +5,10 @@ class Solution {
         int num = 0;
         game: while(true){
             for(char c:Integer.toString(num++,n).toCharArray()){
-                if(turn++ % m == p - 1)
-                    answer+=Character.toUpperCase(c);
-                if(turn >= m*(t-1)+p) 
-                    break game;
+                if(turn++ % m == p - 1) answer+=c;
+                if(turn >= m*(t-1)+p) break game;
             }
         }
-        return answer;
+        return answer.toUpperCase();
     }
 }
