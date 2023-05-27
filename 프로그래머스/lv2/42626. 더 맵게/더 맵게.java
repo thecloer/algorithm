@@ -5,9 +5,7 @@ class Solution {
         int answer = 0;
         for(int s:scoville)
             heap.add(s);
-        while(heap.size()>1){
-            if(heap.peek()>=K)
-                break;
+        while(heap.size()>1 && heap.peek()<K){
             heap.add(heap.poll() + 2 * heap.poll());
             answer++;
         }
