@@ -1,6 +1,6 @@
 class Solution {
-    public long solution(int n) {
-        long[] dp = new long[n];
+    public int solution(int n) {
+        int[] dp = new int[n];
         dp[0]=1;
         if(n>1) dp[1] = 2;
         for(int i=2; i<n; i++)
