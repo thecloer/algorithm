@@ -1,28 +1,27 @@
 import java.util.*;
 class Solution {
     public int solution(int[] priorities, int location) {
-        int head=0, p, max;
-        Set<Integer> done = new HashSet();
-        while(done.size() < priorities.length){
-            head = next(head, priorities.length, done);
-            max = head;
-            for(int i=0; i<priorities.length; i++){
-                p = (head + i)%priorities.length;
-                if(!done.contains(p) && (priorities[p]>priorities[max])) 
-                    max = p;
+        int done = 0;
+        int loc = location;
+        Queue<Integer> queue = new LinkedList();
+        for(int i:priorities)
+            queue.add(i);
+        
+        Arrays.sort(priorities);
+        
+        int p;
+        while(!queue.isEmpty()){
+            p = queue.poll();
+            loc--;
+            if(p == priorities[priorities.length - 1 - done]){
+                done++;
+                if(loc<0) break;
+            } else {
+                queue.add(p);
+                if(loc<0) loc = queue.size() - 1;
             }
-            done.add(max);
-            if(max == location) break;
-            head = max;
         }
         
-        return done.size();
-    }
-    int next(int before, int max, Set<Integer> done){
-        while(before>=max || done.contains(before)){
-            if(before>=max) before = 0;
-            if(done.contains(before)) before++;
-        }
-        return before;
+        return done;
     }
 }
