@@ -8,13 +8,10 @@ class Solution {
             for(int i=0; i<s.length(); i++){
                 c = s.charAt((start+i)%s.length());
                 if(c == '('|| c=='[' || c =='{') stack.push(c);
-                else if(c == ')'|| c==']' || c =='}') {
-                    if(stack.size() < 1) continue rotate;
-                    if(!isPair(stack.pop(),c)) continue rotate;
-                }
+                else if((c == ')'|| c==']' || c =='}') && (stack.size() < 1 || !isPair(stack.pop(),c))) 
+                    continue rotate;
             }
-            if(stack.size()!=0) continue rotate;
-            answer++;
+            if(stack.size()==0) answer++;
         }
         return answer;
     }
