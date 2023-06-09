@@ -6,6 +6,6 @@ class Solution {
             sum+=xCopy%10;
             xCopy /= 10;
         }
-        return (double)x/sum == x/sum;
+        return x%sum==0;
     }
 }
