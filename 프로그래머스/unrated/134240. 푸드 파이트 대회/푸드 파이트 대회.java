@@ -1,20 +1,14 @@
-import java.util.*;
 class Solution {
     public String solution(int[] food) {
         StringBuilder sb = new StringBuilder();
-        order(1,food,sb);
-        return sb.toString();
-    }
-    void order(int index, int[] food, StringBuilder sb){
-        if(index>=food.length){
-            sb.append(0);
-            return;
-        }
+
+        for (int i=1; i<food.length; i++) 
+            for (int j = 0; j < food[i]/2; j++) 
+                sb.append(i);
         
-        for(int i=0; i<food[index]/2; i++)
-            sb.append(index);
-        order(index+1, food, sb);
-        for(int i=0; i<food[index]/2; i++)
-            sb.append(index);
+        StringBuilder answer = new StringBuilder();
+        answer.append(sb).append(0).append(sb.reverse().toString());
+        
+        return answer.toString();
     }
 }
