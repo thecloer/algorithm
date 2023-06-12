@@ -5,7 +5,7 @@ class Solution {
         int[] answer = new int[s.length()];
         for(int i=0; i<s.length(); i++){
             char c = s.charAt(i);
-            answer[i] = map.containsKey(c) ? i - map.get(c) : -1;
+            answer[i] = i - map.getOrDefault(c, i+1);
             map.put(c, i);
         }
         return answer;
