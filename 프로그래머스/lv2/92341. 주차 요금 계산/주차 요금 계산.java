@@ -1,63 +1,27 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        ParkingLot parkingLot = new ParkingLot(fees[0],fees[1],fees[2],fees[3]);
-        for(String record:records){
-            String[] arr = record.split(" ");
-            if(arr[2].equals("IN")) 
-                parkingLot.in(arr[1], arr[0]);
-            else if(arr[2].equals("OUT")) 
-                parkingLot.out(arr[1], arr[0]);
+        Map<String,Integer> map = new TreeMap();
+        for(String record: records){
+            String[] rArr = record.split(" ");
+            int time = rArr[2].equals("IN") ? -1 : 1;
+            time *= parseTime(rArr[0]);
+            map.put(rArr[1], map.getOrDefault(rArr[1], 0)+time);
         }
-        parkingLot.close();
-        
-        return parkingLot.getBills();
+        int[] answer = new int[map.size()];
+        int i=0;
+        for(int time: map.values()){
+            if(time<=0) time += parseTime("23:59");
+            time -= fees[0];
+            int cost = fees[1];
+            if(time>0)
+                cost+=fees[3]*(time/fees[2] + (time%fees[2] > 0 ? 1 : 0));
+            answer[i++] = cost;
+        }
+        return answer;
     }
-}
-class ParkingLot{
-    private final String LIMIT_TIME = "23:59";
-    private final int DEFAULT_TIME;
-    private final int DEFAULT_FEE;
-    private final int UNIT_TIME;
-    private final int UNIT_FEE;
-    private Map<String,String> parkedCars = new HashMap();
-    private Map<String,Integer> times = new HashMap();
-    ParkingLot(int defaultTime, int defaultFee, int unitTime, int unitFee){
-        this.DEFAULT_TIME = defaultTime;
-        this.DEFAULT_FEE = defaultFee;
-        this.UNIT_TIME = unitTime;
-        this.UNIT_FEE = unitFee;
-    }
-    void in(String car, String inTime){
-        parkedCars.put(car,inTime);
-    }
-    void out(String car, String outTime){
-        times.put(car, times.getOrDefault(car, 0) + getTimeDiff(parkedCars.get(car), outTime));
-        parkedCars.put(car, LIMIT_TIME);
-    }
-    void close(){
-        Iterator<String> parkedCarsIter = parkedCars.keySet().iterator();
-        while(parkedCarsIter.hasNext())
-            out(parkedCarsIter.next(), LIMIT_TIME);
-    }
-    int[] getBills() {
-        List<String> carList = new ArrayList(times.keySet());
-        carList.sort((a,b)->a.compareTo(b));
-        int[] bills = new int[carList.size()];
-        for(int i=0; i<bills.length; i++)
-            bills[i] = calculateFee(times.get(carList.get(i)));
-        return bills;
-    }
-    
-    private int calculateFee(int time) {
-        if(time <= DEFAULT_TIME) return DEFAULT_FEE;
-        return DEFAULT_FEE
-            + UNIT_FEE * (int)Math.ceil((double)(time - DEFAULT_TIME)/UNIT_TIME);
-    }
-    private int getTimeDiff(String start, String end){
-        return 60 * (Integer.parseInt(end.substring(0,2)) 
-                - Integer.parseInt(start.substring(0,2))) 
-                + Integer.parseInt(end.substring(3,5)) 
-                - Integer.parseInt(start.substring(3,5));
+    int parseTime(String time){
+        String[] timeStrings = time.split(":");
+        return 60*Integer.parseInt(timeStrings[0]) + Integer.parseInt(timeStrings[1]);
     }
 }
