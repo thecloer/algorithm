@@ -1,4 +1,3 @@
-import java.util.*;
 class Solution {
     int solution(int[][] land) {
         for(int row=1; row<land.length; row++){
