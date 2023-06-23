@@ -1,25 +1,22 @@
+import java.util.*;
 class Solution {
     public int solution(String dirs) {
-        int answer = 0;
-        int[] pos = {5, 5};
-        boolean[][][] used = new boolean[2][11][11];
+        int[] pos = {0, 0};
+        Set<String>[] used = new HashSet[2];
+        for(int i=0; i<used.length; i++)
+            used[i] = new HashSet();
         
         for(char c:dirs.toCharArray()){
             int d = c=='L'||c=='R'? 0 : 1;
             int offset = c=='L'||c=='D'? -1 : 1;
             int next = pos[d]+offset;
-            if(next<0 || next>10) continue;
-            if(!used[d]
-               [d==0?Math.min(pos[0], next): pos[0]]
-               [d==1?Math.min(pos[1], next): pos[1]]){
-                answer++;
-                used[d]
-               [d==0?Math.min(pos[0], next): pos[0]]
-               [d==1?Math.min(pos[1], next): pos[1]] = true;
-            }
-            
+            if(next<-5 || next>5) continue;
+            used[d].add(String.format("%d %d",
+                                       pos[(d+1)%2],
+                                       Math.min(pos[d], next)));
             pos[d] = next;
         }
-        return answer;
+        
+        return used[0].size() + used[1].size();
     }
 }
