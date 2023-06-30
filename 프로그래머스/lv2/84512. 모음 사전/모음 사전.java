@@ -1,20 +1,11 @@
 class Solution {
-    final String LETTERS = "AEIOU";
     public int solution(String word) {
-        return dfs(word,0,new StringBuilder());
-    }
-    int dfs(String word, int count, StringBuilder sb){
-        if(!word.equals(sb.toString())) {
-            for(int i=0; i<LETTERS.length(); i++){
-                sb.append(LETTERS.charAt(i));
-                count++;
-                if(sb.length()<5)
-                    count = dfs(word, count, sb);
-                if(word.equals(sb.toString())) 
-                    break;
-                sb.deleteCharAt(sb.length()-1);
-            }
-        }
-        return count;
+        final String LETTERS = "AEIOU";
+        int n = LETTERS.length();
+        double tot = (Math.pow(n,n+1)-n)/(n-1);
+        int answer = 0;
+        for(char c:word.toCharArray())
+            answer += LETTERS.indexOf(c) * (tot/=n) + 1;
+        return answer;
     }
 }
