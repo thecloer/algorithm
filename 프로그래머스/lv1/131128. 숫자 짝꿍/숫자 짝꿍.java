@@ -1,4 +1,3 @@
-import java.util.*;
 class Solution {
     public String solution(String X, String Y) {
         StringBuilder ans = new StringBuilder();
