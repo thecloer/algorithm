@@ -7,6 +7,7 @@ class Solution {
             put('a', "aya");
             put('w', "woo");
         }};
+        
         int answer = 0;
         babblingLoop: for(String b:babbling){
             int cursor = 0;
@@ -18,8 +19,6 @@ class Solution {
                 before = w;
                 cursor += w.length();
             }
-            System.out.println(b);
-            System.out.println(cursor);
             if(cursor == b.length())
                 answer++;
         }
