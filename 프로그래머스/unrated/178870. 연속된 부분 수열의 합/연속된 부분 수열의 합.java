@@ -9,16 +9,16 @@ class Solution {
             } else if(sum>k){
                 sum-=sequence[right--];
             } else {
-                while(left>0 && sequence[left-1]==sequence[right]){
+                if(left>0 && sequence[left-1]==sequence[right]){
                     left--;
                     right--;
+                } else {
+                    answer[0]=left;
+                    answer[1]=right;
+                    break;
                 }
-                answer[0]=left;
-                answer[1]=right;
-                break;
             }
         }
-            
         return answer;
     }
 }
