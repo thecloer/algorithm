@@ -1,25 +1,24 @@
-import java.util.*;
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        Queue<Integer> q = new LinkedList();
-        int sum=0;
+        int left = sequence.length, right = sequence.length-1, sum = 0;
         int[] answer = new int[2];
-        for(int i=sequence.length-1; i>=0; i--){
-            sum+=sequence[i];
-            q.offer(i);
-            while(!q.isEmpty() && sum>k){
-                sum-=sequence[q.poll()];
-            }
-            if(sum==k){
-                while(!q.isEmpty() && i>0 && sequence[q.peek()] == sequence[i-1]){
-                    q.poll();
-                    q.offer(--i);
+        while(left>=0){
+            if(sum<k){
+                if(--left>=0)
+                    sum+=sequence[left];
+            } else if(sum>k){
+                sum-=sequence[right--];
+            } else {
+                while(left>0 && sequence[left-1]==sequence[right]){
+                    left--;
+                    right--;
                 }
-                answer[0] = i;
-                answer[1] = q.peek();
+                answer[0]=left;
+                answer[1]=right;
                 break;
             }
         }
+            
         return answer;
     }
 }
