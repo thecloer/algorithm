@@ -3,9 +3,8 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         int[] nums = {4,1,2};
         while(n>0){
-            int rest = n%3;
-            sb.insert(0,nums[rest]);
-            n=n/3 + (rest==0?-1:0);
+            sb.insert(0,nums[n%3]);
+            n=(n-1)/3;
         }
         return sb.toString();
     }
