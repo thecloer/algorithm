@@ -1,21 +1,22 @@
-import java.util.*;
 class Solution {
     public int solution(int[] ingredient) {
-        int answer = 0, burger = 0;
-        Stack<Integer> stack = new Stack();
-        for(int curr: ingredient){
-            if(stack.size()>2 && curr==1 && stack.peek()==3){
-                do {
-                    burger=stack.pop();
-                } while(!stack.isEmpty() && stack.peek()==burger-1);
-                if(burger==1){
-                    answer++;
-                    continue;
+        int answer = 0;
+        int[] stack = new int[ingredient.length];
+        for(int i=0, n=0; i<ingredient.length; i++){
+            stack[n++] = ingredient[i];
+            if(n>3 && stack[n-1]==1){
+                boolean isBurger = true;
+                for(int j=1; j<=4; j++){
+                    if(stack[n-j]!=1+(4-j)%3){
+                        isBurger=false;
+                        break;
+                    }
                 }
-                for(int i=burger; i<=3; i++)
-                    stack.push(i);
-            } 
-            stack.push(curr);
+                if(isBurger){
+                    answer++;
+                    n-=4;
+                }
+            }
         }
         return answer;
     }
