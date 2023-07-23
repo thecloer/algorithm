@@ -1,34 +1,24 @@
 import java.util.*;
 class Solution {
     public int solution(int a, int b, int c, int d) {
-        int[] input = new int[] {a,b,c,d};
-        Map<Integer, Integer> map = new HashMap();
-        for(int i:input)
-            map.put(i, map.getOrDefault(i,0)+1);
-        
-        int answer=0;
-        Set<Integer> keys = map.keySet();
-        if(keys.size()==1) {
-            answer = 1111*a;
-        } else if(keys.size()==4) {
-            answer=6;
-            for(int n:input)
-                answer = Math.min(answer, n);
-        } else if(keys.size()==3) {
-            for(int k:keys)
-                if(map.get(k)==1)
-                    answer = answer==0? k : answer*k;
-        } else {
-            boolean isAbs = false;
-            for(int k:keys) {
-                if(map.get(k)==2){
-                    answer = -answer + (int)Math.pow(k,2);
-                    isAbs = true;
-                } else 
-                    answer += map.get(k)==1? k : 10*k;
+        int[] arr = {a,b,c,d};
+        Arrays.sort(arr);
+        int ans = arr[0];
+        if(ans==arr[3])
+            ans=1111*arr[0];
+        else if(arr[0]==arr[2] || arr[1]==arr[3])
+            ans = (int)Math.pow(9*arr[1]+arr[0]+arr[3],2);
+        else if(arr[0]==arr[1] && arr[2]==arr[3])
+            ans = (int)(Math.pow(arr[3],2)-Math.pow(arr[0],2));
+        else {
+            int duplicatedValue = 0;
+            for(int i=1; i<arr.length; i++){
+                if(arr[i]==arr[i-1])
+                    duplicatedValue = arr[i];
+                ans *= arr[i];
             }
-            answer = isAbs? Math.abs(answer) : (int)Math.pow(answer,2);
+            ans = duplicatedValue==0 ? arr[0] : ans/(int)Math.pow(duplicatedValue,2);
         }
-        return answer;
+        return ans;
     }
 }
