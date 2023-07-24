@@ -1,24 +1,23 @@
 class Solution {
     public String solution(String m, String[] musicinfos) {
         m = removeSharp(m);
-        String title = null;
+        String title = "(None)";
         int savedPlayTime = 0;
         for(String musicInfo:musicinfos){
             String[] info = musicInfo.split(",");
-            info[3] = removeSharp(info[3]);
+            String music = removeSharp(info[3]);
             int playTime = getTimeDiff(info[0], info[1]);
             
-            StringBuilder played = new StringBuilder();
+            StringBuilder playedMusic = new StringBuilder();
             for(int time=0; time<playTime; time++)
-                played.append(info[3].charAt(time%info[3].length()));
+                playedMusic.append(music.charAt(time % music.length()));
             
-            if(played.toString().contains(m) 
-               && (title==null || savedPlayTime<playTime)) {
+            if(playedMusic.toString().contains(m) && savedPlayTime<playTime) {
                 title = info[2];
                 savedPlayTime = playTime;
             }
         }
-        return title==null? "(None)" : title;
+        return title;
     }
     int getTimeDiff(String start, String end){
         return 60 * (Integer.valueOf(end.substring(0,2))
@@ -31,9 +30,9 @@ class Solution {
         char last = ' ';
         int len = 0;
         for(char c:music.toCharArray()){
-            if(c=='#'){
+            if(c=='#')
                 sb.setCharAt(len-1, Character.toLowerCase(last));
-            } else {
+            else {
                 sb.append(c);
                 last = c;
                 len++;
