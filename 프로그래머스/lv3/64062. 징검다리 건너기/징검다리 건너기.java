@@ -1,20 +1,19 @@
 import java.util.*;
 class Solution {
     public int solution(int[] stones, int k) {
-        int answer=Integer.MAX_VALUE;
-        for(int head=0; head<stones.length-k+1; head++){
-            if(stones[head]>=answer)
-                continue;
-
-            int maxIdx = head;
-            for(int i=head+1; i<head+k && i<stones.length; i++)
-                if(stones[i] >= stones[maxIdx])
-                    maxIdx = i;
-            PriorityQueue<Integer> maxQueue = new PriorityQueue<Integer>((a,b)->b.compareTo(a));
-            
-            answer = Math.min(answer, stones[maxIdx]);
-            head = maxIdx;
+        int min=1, max=200000000, mid=(max+min)/2;
+        while(min<max){            
+            int count = 0;
+            for(int s:stones){
+                count = s>mid ? 0 : count+1;
+                if(count==k) break;
+            }
+            if(count == k)
+                max=mid;
+            else
+                min=mid+1;
+            mid = (max+min)/2;
         }
-        return answer;
+        return mid;
     }
 }
