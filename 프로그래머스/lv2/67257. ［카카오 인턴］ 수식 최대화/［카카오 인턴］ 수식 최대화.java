@@ -9,13 +9,10 @@ class Solution {
         Set<String> priorities = new HashSet();
         combination(priorities, operators.toString(), new StringBuilder());
         
-        long answer = 0;
-        boolean isStart = true;
-        for(String priority:priorities) {
-            if(isStart) isStart=false;
-            else e.reset();
+        long answer = -1;
+        for(String priority:priorities) 
             answer = Math.max(answer, e.calculate(priority));
-        }
+        
         return answer;
     }
     
@@ -51,7 +48,8 @@ class Solution {
                 this.symbol=symbol;
             }
         }
-        String rawExpression;
+        
+        private String rawExpression;
         private Token head, tail;
         private char[] operators = {'*', '+', '-'};
         private Map<Character, ArrayList<Operator>> operatorMap = new HashMap();
@@ -59,15 +57,9 @@ class Solution {
             this.rawExpression = rawExpression;
             tokenize();
         }
-        void reset(){
-            head=null;
-            tail=null;
-            tokenize();
-        }
         private void tokenize(){
             StringBuilder num = new StringBuilder();
             for(char c:this.rawExpression.toCharArray()){
-                
                 boolean isOperator = false;
                 for(char o:operators){
                     if(c==o){
@@ -77,19 +69,19 @@ class Solution {
                 }
                 
                 if(isOperator) {
-                    Token prevNumber = new Operand(Integer.valueOf(num.toString()));
+                    Token prevNumber = new Operand(Long.valueOf(num.toString()));
                     Token currOperator = new Operator(c);
                     prevNumber.next = currOperator;
                     currOperator.prev = prevNumber;
+                    num.setLength(0);
                     
-                    if(head==null) {
+                    if(head==null) 
                         head = prevNumber;
-                    } else {
+                    else {
                         tail.next = prevNumber;
                         prevNumber.prev = tail;
                     }
                     tail = currOperator;
-                    num.setLength(0);
                     
                     ArrayList<Operator> list = operatorMap.getOrDefault(c, new ArrayList());
                     list.add((Operator)currOperator);
@@ -102,10 +94,14 @@ class Solution {
             lastNum.prev = tail;
             tail = lastNum;
         }
+        void reset(){
+            head=null;
+            tail=null;
+            tokenize();
+        }
         Set<Character> getOperators() {
             return operatorMap.keySet();
         }
-        
         long calculate(String priority){
             for(char operator:priority.toCharArray()){
                 for(Operator o:operatorMap.get(operator)){
@@ -124,7 +120,9 @@ class Solution {
                         prevOperand.next.prev = prevOperand;
                 }
             }
-            return Math.abs(((Operand)head).value);
+            long result = Math.abs(((Operand)head).value);
+            reset();
+            return result;
         }
         
         @Override
