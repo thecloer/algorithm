@@ -1,19 +1,20 @@
 import java.util.*;
 class Solution {
     public int solution(int[] stones, int k) {
-        int min=1, max=200000000, mid=(max+min)/2;
-        while(min<max){            
-            int count = 0;
-            for(int s:stones){
-                count = s>mid ? 0 : count+1;
-                if(count==k) break;
-            }
-            if(count == k)
-                max=mid;
-            else
-                min=mid+1;
-            mid = (max+min)/2;
+        int answer = 200000000;
+        Deque<int[]> window = new ArrayDeque();
+        for(int i=0; i<stones.length; i++) {            
+            if(!window.isEmpty() && window.peek()[0] <= i-k)
+                window.poll();
+            
+            while(!window.isEmpty() && window.peekLast()[1] <= stones[i])
+                window.pollLast();
+            
+            window.offer(new int[] {i, stones[i]});
+            
+            if(i >= k-1 && answer > window.peek()[1])
+                answer = window.peek()[1];
         }
-        return mid;
+        return answer;
     }
 }
