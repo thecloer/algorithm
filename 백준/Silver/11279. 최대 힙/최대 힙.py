@@ -1,10 +1,12 @@
-import sys, heapq
-readline = sys.stdin.readline
+import sys
+import heapq
+
 def main():
-  N = int(readline())
+  input = sys.stdin.readline
+  N = int(input())
   heap = []
   for _ in range(N):
-    n = int(readline())
+    n = int(input())
     if n:
       heapq.heappush(heap, -n)
     else:
