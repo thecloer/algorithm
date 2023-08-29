@@ -3,55 +3,34 @@ import java.io.*;
 
 public class Main
 {
-    static PriorityQueue<Integer> minQ = new PriorityQueue<>();
-    static PriorityQueue<Integer> maxQ = new PriorityQueue<>(Comparator.reverseOrder());
-    static Map<Integer,Integer> countMap = new HashMap<>();
     public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.valueOf(br.readLine());
-        for(int i=0; i<T; i++) {
-            minQ.clear();
-            maxQ.clear();
-            countMap.clear();
-            
-            int k = Integer.valueOf(br.readLine());
-            for(int j=0; j<k; j++) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+        while(T-- > 0) {
+            int k = Integer.parseInt(br.readLine());
+            TreeMap<Integer, Integer> map = new TreeMap<>();
+            while(k-- > 0) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
-                String operation = st.nextToken();
-                int value = Integer.valueOf(st.nextToken());
-                if("I".equals(operation)) {
-                    countMap.put(value, countMap.getOrDefault(value, 0)+1);
-                    minQ.offer(value);
-                    maxQ.offer(value);
-                } else if(value < 0) {
-                    if(!minQ.isEmpty()){
-                        int min = minQ.poll();
-                        countMap.put(min, countMap.get(min)-1);
-                    }
-                } else {
-                    if(!maxQ.isEmpty()){
-                        int max = maxQ.poll();
-                        countMap.put(max, countMap.get(max)-1);
-                    }
+                char cmd = st.nextToken().charAt(0);
+                int n = Integer.parseInt(st.nextToken());
+
+                if(cmd == 'I') 
+                    map.merge(n, 1, Integer::sum);
+                else if(cmd == 'D' && !map.isEmpty()){
+                    int key = (n==1) ? map.lastKey() : map.firstKey();
+                    int count = map.merge(key, -1, Integer::sum);
+                    if(count == 0) map.remove(key);
                 }
-                cleanQs();
             }
-            if(minQ.isEmpty() || maxQ.isEmpty())
+
+            if(map.isEmpty()) 
                 System.out.println("EMPTY");
             else {
-                cleanQs();
-                StringBuilder sb = new StringBuilder();
-                sb.append(maxQ.peek())
-                  .append(" ")
-                  .append(minQ.peek());
-                System.out.println(sb);
+                StringBuilder ans = new StringBuilder();
+                ans.append(map.lastKey()).append(" ").append(map.firstKey());
+                System.out.println(ans);
             }
         }
 	}
-    static void cleanQs() {
-        while(!minQ.isEmpty() && countMap.get(minQ.peek()) == 0)
-            minQ.poll();
-        while(!maxQ.isEmpty() && countMap.get(maxQ.peek()) == 0)
-            maxQ.poll();
-    }
 }
