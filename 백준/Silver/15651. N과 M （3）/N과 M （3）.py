@@ -1,5 +1,5 @@
 def product(pool: tuple[int], r: int):
-    if r == 0 or r > len(pool):
+    if r == 0:
         return []
     if r == 1:
         return [[x] for x in pool]
