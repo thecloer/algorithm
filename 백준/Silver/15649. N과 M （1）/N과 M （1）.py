@@ -1,23 +1,6 @@
-global N, M
+from itertools import permutations
 
-def dfs(rest: set[int], lst: list[int]):
-    global N, M
-    if len(lst) == M:
-        print(*lst)
-        return
-    for i in range(1, N+1):
-        if i in rest:
-            rest.remove(i)
-            lst.append(i)
-            dfs(rest, lst)
-            lst.pop()
-            rest.add(i)
+N, M = map(int, input().split())
+for c in permutations(range(1, N+1), M):
+    print(*c)
 
-def main():
-    global N, M
-    N, M = map(int, input().split())
-    rest = {i for i in range(1, N+1)}
-    dfs(rest, [])
-
-
-main()
