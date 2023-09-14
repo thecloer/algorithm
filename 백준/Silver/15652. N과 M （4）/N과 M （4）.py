@@ -1,4 +1,7 @@
-def combinations_with_replacement(pool: tuple[int], r: int):
+import sys
+read = sys.stdin.readline
+
+def combinations_with_replacement(pool: list[int], n: int, r: int):
     if r == 0:
         return []
     if r == 1:
@@ -6,13 +9,15 @@ def combinations_with_replacement(pool: tuple[int], r: int):
 
     result = []
     for i, x in enumerate(pool):
-        for cwr in combinations_with_replacement(pool[i:], r - 1):
+        nextPool = pool[i:]
+        for cwr in combinations_with_replacement(nextPool, n - 1, r - 1):
             result.append([x] + cwr)
     return result
 
 def main():
-    N, M = map(int, input().split())
-    for cwr in combinations_with_replacement(tuple(range(1, N + 1)), M):
+    N, M = map(int, read().split())
+    pool = list(range(1, N + 1))
+    for cwr in combinations_with_replacement(pool, N, M):
         print(*cwr)
 
 main()
