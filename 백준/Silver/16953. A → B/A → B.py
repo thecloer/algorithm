@@ -1,16 +1,16 @@
 A, B = map(int, input().split())
 count = 1
 
-while A < B:
-    if B % 2 == 0:
-        B = B//2
+while B > A:
+    if B & 1 == 0:
+        B //= 2
     elif B % 10 == 1:
-        B = B//10
+        B //= 10
     else:
         break
     count += 1
 
-if A == B:
-    print(count)
-else:
-    print(-1)
+if A != B:
+    count = -1
+
+print(count)
