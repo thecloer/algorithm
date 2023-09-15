@@ -1,23 +1,16 @@
-from collections import deque
-
 A, B = map(int, input().split())
+count = 1
 
-hash = dict()
-hash[A] = 0
-q = deque([A])
-ans = -1
-while q and ans < 0:
-    x = q.popleft()
-    for y in [2*x, 10*x+1]:
-        if (y > B) or (y in hash):
-            continue
-        if y == B:
-            ans = hash[x] + 1
-            break
-        hash[y] = hash[x] + 1
-        q.append(y)
+while A < B:
+    if B % 2 == 0:
+        B = B//2
+    elif B % 10 == 1:
+        B = B//10
+    else:
+        break
+    count += 1
 
-if ans < 0:
-    print(-1)
+if A == B:
+    print(count)
 else:
-    print(ans+1)
+    print(-1)
