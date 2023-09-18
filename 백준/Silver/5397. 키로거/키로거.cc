@@ -27,6 +27,6 @@ int main(){
         L.insert(cursor, c);
     }
     for(char c:L) cout << c;
-    cout << endl;
+    cout << '\n';
   }
 }
