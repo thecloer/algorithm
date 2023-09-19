@@ -9,23 +9,23 @@ The repository is structured as follows:
 
 ```bash
 .
-├── SWEA                          # SWEA
-│   ├── [Difficulty]
-│   ⋮   ├── [Problem]
-│       ⋮   ├── [Solution].py   # My solution
-│           └── README.md         # Problem description
+├── SWEA							# SWEA
+│	├── [Difficulty]
+│	⋮	├── [Problem]
+│		⋮	├── [Solution].py		# My solution
+│			└── README.md			# Problem description
 │
-├── 백준                          # BOJ
-│   ├── [Difficulty]
-│   ⋮   ├── [Problem]
-│       ⋮   ├── [Solution].cc
-│           └── README.md
+├── 백준							# BOJ
+│	├── [Difficulty]
+│	⋮	├── [Problem]
+│		⋮	├── [Solution].cc
+│			└── README.md
 │
-└── 프로그래머스                  # Programmers
-    ├── [Difficulty]
-    ⋮   ├── [Problem]
-        ⋮   ├── [Solution].java
-            └── README.md
+└── 프로그래머스					# Programmers
+	├── [Difficulty]
+	⋮	├── [Problem]
+		⋮	├── [Solution].java
+				└── README.md
 ```
 
 - `[Difficulty]`: Difficulty of the problem which is set by the source.
