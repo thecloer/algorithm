@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stack>
-#include <list>
+#include <string>
 using namespace std;
 
 
@@ -8,23 +8,23 @@ int main(){
   ios::sync_with_stdio(0);
   cin.tie(0);cout.tie(0);
 
-  int N, n, x, k=1;
+  int n, k=1;
   stack<int> S;
-  list<char> ans;
-  cin >> N;
-  n = N;
+  string ans;
+  cin >> n;
   while(n--){
+    int x;
     cin >> x;
-    while(S.empty() || k <= x) {
-      ans.push_back('+');
+    while(k <= x) {
+      ans += "+\n";
       S.push(k++);
     }
-    if(S.top() == x) {
-      ans.push_back('-');
-      S.pop();
-    } else break;
+    if(S.top() != x) {
+      cout << "NO";
+      return 0;
+    }
+    ans += "-\n";
+    S.pop();
   }
-  if(ans.size() == 2*N) 
-    for(char c:ans) cout << c << '\n';
-  else cout << "NO";
+  cout << ans;
 }
