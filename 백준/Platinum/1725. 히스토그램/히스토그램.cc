@@ -1,17 +1,16 @@
 #include <iostream>
 #include <stack>
 using namespace std;
-#define idx first
-#define height second
+
+struct element { int idx, height; };
 
 int main(){
   ios::sync_with_stdio(0);
   cin.tie(0);cout.tie(0);
   
-  long long ans = 0;
-  int n;
+  int n, ans = 0;
   cin >> n;
-  stack<pair<int,int>> S;
+  stack<element> S;
   for(int i=0; i<=n; i++){
     int x = 0, idx = i;
     if(x != n) cin >> x;
@@ -19,7 +18,7 @@ int main(){
       int h = S.top().height;
       int w = i - S.top().idx;
       idx = S.top().idx;
-      ans = max(ans, 1LL * h * w);
+      ans = max(ans, h * w);
       S.pop();
     }
     if(S.empty() || S.top().height != x)
