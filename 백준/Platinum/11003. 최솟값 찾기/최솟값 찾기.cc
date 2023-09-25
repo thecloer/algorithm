@@ -2,12 +2,12 @@
 #include <deque>
 using namespace std;
 
-int N, L, x;
-deque<pair<int, int> > dq;
-
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(NULL); cout.tie(NULL);
+
+  int N, L, x;
+  deque<pair<int, int> > dq;
 
   cin >> N >> L;
   for(int i=0; i<N; i++){
