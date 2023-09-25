@@ -3,7 +3,7 @@
 This repository is the collection of problems I've solved along with my solutions.  
 Problems are sourced from [BOJ](https://www.acmicpc.net/), [Programmers](https://school.programmers.co.kr/learn/challenges), [SWEA](https://swexpertacademy.com/main/code/problem/problemList.do) and [LeetCode](https://leetcode.com/problemset/all/) 
 
-LeetCode solutions are on [this repository](https://github.com/thecloer/LeetCode)
+`LeetCode` solutions are on [this repository](https://github.com/thecloer/LeetCode)
 
 ## Folder Structure
 
@@ -29,6 +29,7 @@ The repository is structured as follows:
         └── [Problem]
              ├── [Solution].py    # My solution
              └── README.md        # Problem description
+
 
 # Leetcode Repository
 .
