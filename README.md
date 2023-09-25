@@ -32,11 +32,11 @@ The repository is structured as follows:
 
 # Leetcode Repository
 .
-├── LeetCode                      # LeetCode
-│   └── [Difficulty]
-│       └── [Problem]
-│           ├── [Solution].py
-│           └── README.md
+└── LeetCode                      # LeetCode
+    └── [Difficulty]
+        └── [Problem]
+            ├── [Solution].py
+            └── README.md
 ```
 
 - `[Difficulty]`: Difficulty of the problem which is set by the source.
