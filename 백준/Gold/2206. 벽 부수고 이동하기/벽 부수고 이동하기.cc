@@ -13,7 +13,7 @@ int main() {
     int N, M; cin >> N >> M;
     for(int i=0; i<N; i++) cin >> board[i];
 
-    int endX = N-1, endY = M-1;
+    int ans = -1, endX = N-1, endY = M-1;
     queue<tuple<int, int, bool>> Q;
     dist[0][0][0] = dist[0][0][1] = 1;
     Q.push({0, 0, 0});
@@ -21,15 +21,16 @@ int main() {
         int x, y; bool broken;
         tie(x, y, broken) = Q.front(); 
         if(x == endX && y == endY) {
-            cout << dist[x][y][broken];
-            return 0;
+            ans = dist[x][y][broken];
+            break;
         }
         Q.pop();
         int nxt = dist[x][y][broken] + 1;
         for(int d=4; d--;) {
             int nx = x + dx[d], ny = y + dy[d];
             if(nx<0 || nx >=N || ny<0 || ny>=M) continue;
-            if(board[nx][ny] == '0' && !dist[nx][ny][broken]) {
+            if(board[nx][ny] == '0') {
+                if(dist[nx][ny][broken]) continue;
                 dist[nx][ny][broken] = nxt;
                 Q.push({nx, ny, broken});
             }
@@ -39,5 +40,5 @@ int main() {
             }
         }
     }
-    cout << -1;
+    cout << ans;
 }
