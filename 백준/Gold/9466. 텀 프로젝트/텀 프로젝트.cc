@@ -1,5 +1,4 @@
 #include <iostream>
-#include <list>
 using namespace std;
 
 enum Status { NOT_VISITED, VISITED, NOT_CYCLE, CYCLE };
@@ -21,13 +20,13 @@ void run(int x) {
             return;
         }
         if(status[cur] == VISITED) {
-            while(status[cur] != CYCLE) {
+            while(status[cur] == VISITED) {
                 status[cur] = CYCLE;
                 cur = nxt[cur];
             }
             if(cur != x) {
                 cur = x;
-                while(status[cur] != CYCLE) {
+                while(status[cur] == VISITED) {
                     status[cur] = NOT_CYCLE;
                     cur = nxt[cur];
                 }
@@ -43,7 +42,6 @@ int main() {
     int T; cin >> T;
     while(T--) {
         cin >> n;
-        list<int> lst;
         for(int i=1; i<=n; i++){
             cin >> nxt[i];
             status[i] = NOT_VISITED;
