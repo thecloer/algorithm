@@ -12,9 +12,6 @@ int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     int N, M; cin >> N >> M;
     for(int i=0; i<N; i++) cin >> board[i];
-    for(int i=0; i<N; i++)
-        for(int j=0; j<M; j++)
-            dist[i][j][0] = dist[i][j][1] = -1;
 
     int endX = N-1, endY = M-1;
     queue<tuple<int, int, bool>> Q;
@@ -32,11 +29,11 @@ int main() {
         for(int d=4; d--;) {
             int nx = x + dx[d], ny = y + dy[d];
             if(nx<0 || nx >=N || ny<0 || ny>=M) continue;
-            if(board[nx][ny] == '0' && dist[nx][ny][broken] == -1) {
+            if(board[nx][ny] == '0' && !dist[nx][ny][broken]) {
                 dist[nx][ny][broken] = nxt;
                 Q.push({nx, ny, broken});
             }
-            if(board[nx][ny] == '1' && !broken && dist[nx][ny][1] == -1) {
+            if(board[nx][ny] == '1' && !broken && !dist[nx][ny][1]) {
                 dist[nx][ny][1] = nxt;
                 Q.push({nx, ny, 1});
             }
