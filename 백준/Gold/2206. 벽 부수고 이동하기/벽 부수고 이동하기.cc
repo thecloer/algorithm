@@ -34,7 +34,7 @@ int main() {
                 dist[nx][ny][broken] = nxt;
                 Q.push({nx, ny, broken});
             }
-            if(board[nx][ny] == '1' && !broken && !dist[nx][ny][1]) {
+            else if(!broken && !dist[nx][ny][1]) {
                 dist[nx][ny][1] = nxt;
                 Q.push({nx, ny, 1});
             }
