@@ -9,21 +9,20 @@ int dx[] = {1,0,-1,0};
 int dy[] = {0,1,0,-1};
 queue<xy> B;
 
-bool isOut(int x, int y) {return x<0||x>=N||y<0||y>=M;};
-bool isOcean(int x, int y) {return board[x][y] == 0;};
+inline bool isOut(int x, int y) { return x<0||x>=N||y<0||y>=M; };
+inline bool isOcean(int x, int y) { return board[x][y] == 0; };
 
 void melting() {
     for(int size = B.size(); size--;) {
         xy cur = B.front(); B.pop();
-        bool isBeach = false;
+        bool isB = false;
         for(int d=4; d--;) {
             int nx = cur.x + dx[d], ny = cur.y + dy[d];
             if(isOut(nx, ny) || isOcean(nx, ny)) continue;
-            board[nx][ny]--;
-            if(isOcean(nx, ny)) B.push({nx, ny});
-            else isBeach = true;
+            if(--board[nx][ny]) isB = true;
+            else B.push({nx, ny});
         }
-        if(isBeach) B.push(cur);
+        if(isB) B.push(cur);
     }
 }
 int countLands() {
@@ -39,7 +38,7 @@ int countLands() {
             while(!Q.empty()){
                 xy cur = Q.front(); Q.pop();
                 for(int d=4; d--;) {
-                    int nx=cur.x+dx[d], ny=cur.y+dy[d];
+                    int nx = cur.x + dx[d], ny = cur.y + dy[d];
                     if(isOut(nx, ny)) continue;
                     if(isOcean(nx, ny) || vis[nx][ny]) continue;
                     vis[nx][ny] = true;
@@ -57,13 +56,13 @@ int main() {
         for(int j=0; j<M; j++)
             cin >> board[i][j];
     
-    for(int i=0; i<N; i++) {
-        for(int j=0; j<M; j++) {
-            if(!isOcean(i, j)) continue;
+    for(int x=0; x<N; x++) {
+        for(int y=0; y<M; y++) {
+            if(!isOcean(x, y)) continue;
             for(int d=4; d--;) {
-                int nx = i + dx[d], ny = j + dy[d];
+                int nx = x + dx[d], ny = y + dy[d];
                 if(isOut(nx, ny) || isOcean(nx, ny)) continue;
-                B.push({i, j});
+                B.push({x, y});
                 break;
             }
         }
