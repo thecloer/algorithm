@@ -19,7 +19,6 @@ int markLand() {
             queue<xy> Q;
             Q.push({i, j});
             vis[i][j] = ++landCnt;
-            board[i][j] = landCnt;
             while(!Q.empty()) {
                 xy cur = Q.front(); Q.pop();
                 bool isBorder = false;
@@ -32,7 +31,6 @@ int markLand() {
                         continue;
                     }
                     vis[nx][ny] = landCnt;
-                    board[nx][ny] = landCnt;
                     Q.push({nx, ny});
                 }
                 if(isBorder) land[landCnt].push(cur);
