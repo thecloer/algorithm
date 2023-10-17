@@ -9,29 +9,31 @@ int main() {
 
     int bitLimit = 2;
     while(N >= bitLimit) bitLimit <<= 1;
-    int dist[bitLimit];
-    for(int i=0; i<bitLimit; i++) dist[i] = -1;
+
+    bool vis[bitLimit];
+    for(int i=0; i<bitLimit; i++) vis[i] = false;
 
     queue<int> Q;
     while(M--) {
         int x; cin >> x;
-        dist[x] = 0;
+        vis[x] = true;
         Q.push(x);
     }
 
+    int ans = 0;
     while(!Q.empty()) {
-        int x = Q.front(); Q.pop();
-        for(int b = 1; b < bitLimit; (b <<= 1)) {
-            int nx = x ^ b;
-            if(nx >= bitLimit) continue;
-            if(dist[nx] != -1) continue;
-            dist[nx] = dist[x] + 1;
-            Q.push(nx);
+        ans++;
+        int size = Q.size();
+        while(size--) {
+            int x = Q.front(); Q.pop();
+            for(int b = 1; b < bitLimit; (b <<= 1)) {
+                int nx = x ^ b;
+                if(nx > N) continue;
+                if(vis[nx]) continue;
+                vis[nx] = true;
+                Q.push(nx);
+            }
         }
     }
-
-    int ans = 0;
-    for(int i=0; i<=N; i++)
-        if(dist[i] > ans) ans = dist[i];
-    cout << ans;
+    cout << ans-1;
 }
