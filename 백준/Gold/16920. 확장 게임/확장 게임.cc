@@ -29,7 +29,7 @@ void bfs(int p) {
                 if(nx<0 or nx>=N or ny<0 or ny>=M) continue;
                 if(board[nx][ny] != '.') continue;
                 area[p]++;
-                board[nx][ny] = p + '0';
+                board[nx][ny] = '#';
                 Q.push({nx, ny});
             }
         }
