@@ -21,16 +21,16 @@ int main() {
     while(!Q.empty()) {
         int size = Q.size();
         while(size--) {
-            auto [x, y, k] = Q.front(); Q.pop();
-            if(x == endX and y == endY) {
+            auto cur = Q.front(); Q.pop();
+            if(cur.x == endX and cur.y == endY) {
                 cout << ans;
                 return 0;
             }
             bool wait = false;
             for(int i=4; i--;) {
-                int nx = x + dx[i], ny = y + dy[i];
+                int nx = cur.x + dx[i], ny = cur.y + dy[i];
                 if(nx<0 or nx>endX or ny<0 or ny>endY) continue;
-                int nk = board[nx][ny] == '1' ? k + 1 : k;
+                int nk = board[nx][ny] == '1' ? cur.k + 1 : cur.k;
                 if(nk > K or vis[nx][ny][nk]) continue;
                 if(board[nx][ny] == '1' and !(ans & 1)) wait = true;
                 else {
@@ -38,7 +38,7 @@ int main() {
                     Q.push({nx, ny, nk});
                 }
             }
-            if(wait) Q.push({x, y, k});
+            if(wait) Q.push(cur);
         }
         ans++;
     }
