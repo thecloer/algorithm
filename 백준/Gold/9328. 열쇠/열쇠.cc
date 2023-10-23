@@ -1,92 +1,63 @@
 #include <iostream>
+#include <queue>
 #include <vector>
 #include <string>
-#include <queue>
 using namespace std;
 
 struct xy {int x, y;};
-int mark, h, w;
-string keys;
-char board[100][100];
-int vis[100][100];
-vector<xy> doors[26];
-bool open[26];
-queue<xy> Q;
-int dx[] = {0, 1, 0, -1};
-int dy[] = {1, 0, -1, 0};
-
-bool isDoor(char x) {return x >= 'A' and x <= 'Z';}
-bool isKey(char x) {return x >= 'a' and x <= 'z';}
-bool OOB(int x, int y) {return x<0 or x>=h or y<0 or y>=w;}
-bool blocked(int x, int y) {
-    if(OOB(x, y)) return true;
-    if(board[x][y] == '*') return true;
-    if(vis[x][y] == mark) return true;
-    if(isDoor(board[x][y]) and not open[board[x][y] - 'A']) return true;
-    return false;
-}
-void openDoor(char key) {
-    open[key - 'a'] = true;
-    auto &door = doors[key - 'a'];
-    while(not door.empty()) {
-        auto [x, y] = door.back(); door.pop_back();
-        for(int dir=4; dir--;) {
-            int nx = x + dx[dir], ny = y + dy[dir];
-            if(OOB(nx, ny) || vis[nx][ny] == mark) {
-                Q.push({x, y});
-                break;
-            }
-        }
-    }
-}
-
-void bfs(int &ans, int X, int Y) {
-    Q.push({X, Y});
-    vis[X][Y] = mark;
-    while(not Q.empty()) {
-        auto [x, y] = Q.front(); Q.pop();
-        if(board[x][y] == '$') ans++;
-        else if(isKey(board[x][y]) and not open[board[x][y] - 'a'])
-            openDoor(board[x][y]);
-        
-        for(int dir=4; dir--;) {
-            int nx = x + dx[dir], ny = y + dy[dir];
-            if(blocked(nx, ny)) continue;
-            vis[nx][ny] = mark;
-            Q.push({nx ,ny});
-        }
-    }
-}
+char board[102][102];
+int vis[102][102];
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, 1, 0, -1};
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    cin >> mark;
+    int mark; cin >> mark;
     while(mark) {
-        for(int i=0; i<26; i++) {
-            doors[i].clear();
-            open[i] = false;
-        }
-        cin >> h >> w;
-        for(int i=0; i<h; i++) {
-            cin >> board[i];
-            for(int j=0; j<w; j++)
-                if(isDoor(board[i][j]))
-                    doors[board[i][j] - 'A'].push_back({i, j});
-        }
-        cin >> keys;
-        if(keys != "0")
-            for(char key:keys)
-                openDoor(key);
-            
-        int ans = 0, x = 0, y = 0, n = 2*(w+h)-4, dir = 0;
-        while(n--) {
-            if(not blocked(x, y))
-                bfs(ans, x, y);
+        int h, w, ans = 0;
+        bool open[26] = {};
+        vector<xy> locked[26];
+        queue<xy> Q;
 
-            int nx = x + dx[dir], ny = y + dy[dir];
-            if(OOB(nx, 0)) y += dy[++dir];
-            else if(OOB(0, ny)) x += dx[++dir];
-            else {x = nx; y = ny;}
+        cin >> h >> w;
+        for(int i=1; i<=h; i++) cin >> (board[i] + 1);
+        for(int i:{0, h+1}) 
+            for(int j=0; j<w+2; j++)
+                board[i][j] = '\0';
+        for(int i=1; i<h; i++) 
+            for(int j:{0, w+1})
+                board[i][j] = '\0';
+        string keystr; cin >> keystr;
+        if(keystr != "0")
+            for(char k:keystr) open[k - 'a'] = true;
+
+        Q.push({0, 0});
+        vis[0][0] = mark;
+        while(!Q.empty()) {
+            xy cur = Q.front(); Q.pop();
+            for(int dir=4; dir--;) {
+                int nx = cur.x + dx[dir], ny = cur.y + dy[dir];
+                if(nx<0 || nx>(h+1) || ny<0 || ny>(w+1)) continue;
+                if(board[nx][ny] == '*' || vis[nx][ny] == mark) continue;
+                vis[nx][ny] = mark;
+                if(board[nx][ny] >= 'A' && board[nx][ny] <= 'Z') {
+                    int k = board[nx][ny] - 'A';
+                    if(!open[k]) {
+                        locked[k].push_back({nx, ny});
+                        continue;
+                    }
+                }
+                else if(board[nx][ny] >= 'a' && board[nx][ny] <= 'z') {
+                    int k = board[nx][ny] - 'a';
+                    open[k] = true;
+                    while(!locked[k].empty()) {
+                        Q.push(locked[k].back());
+                        locked[k].pop_back();
+                    }
+                }
+                else if(board[nx][ny] == '$') ans++;
+                Q.push({nx, ny});
+            }
         }
         cout << ans << '\n';
         mark--;
