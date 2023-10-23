@@ -73,7 +73,7 @@ int main() {
                 if(isDoor(board[i][j]))
                     doors[board[i][j] - 'A'].push_back({i, j});
         }
-        cin.ignore(); getline(cin, keys);
+        cin >> keys;
         if(keys != "0")
             for(char key:keys)
                 openDoor(key);
