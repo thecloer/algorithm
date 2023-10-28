@@ -4,25 +4,25 @@ using namespace std;
 
 int N, M;
 bool used[9];
-vector<int> selected;
+int result[8];
 
-void permutation() {
-    if(selected.size() == M) {
-        for(int x:selected) cout << x << ' ';
+void permutation(int size) {
+    if(size == M) {
+        for(int i=0; i<size; i++)
+            cout << result[i] << ' ';
         cout << '\n';
         return;
     }
-    for(int i=1; i<=N; i++) {
-        if(used[i]) continue;
-        used[i] = true;
-        selected.push_back(i);
-        permutation();
-        selected.pop_back();
-        used[i] = false;
+    for(int x=1; x<=N; x++) {
+        if(used[x]) continue;
+        result[size] = x;
+        used[x] = true;
+        permutation(size + 1);
+        used[x] = false;
     }
 }
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     cin >> N >> M;
-    permutation();
+    permutation(0);
 }
