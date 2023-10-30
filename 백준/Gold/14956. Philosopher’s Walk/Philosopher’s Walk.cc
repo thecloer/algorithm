@@ -25,9 +25,8 @@ void findLoc(int n, int m) {
             break;
         case 3:
             tmp = locY;
-            locY = 2*n + 1 - locX;
+            locY = n + 1 - locX;
             locX = 2*n + 1 - tmp;
-            locY -= n;
             break;
         default:
             throw;
