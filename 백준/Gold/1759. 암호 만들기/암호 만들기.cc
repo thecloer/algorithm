@@ -1,43 +1,34 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
-#include <vector>
 using namespace std;
 
-char vowels[5], consonants[14];
+int L, C;
+char input[15];
+char output[15];
+
+bool isVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
+void backTracking(int cur, int len, int vowelCnt) {
+    if(len == L) {
+    	if(vowelCnt < 1 || len-vowelCnt < 2)
+    		return;
+        for(int i=0; i<L; i++) 
+        	cout << output[i];
+		 cout << '\n';
+		 return;
+    }
+    for(int i=cur; i<C; i++) {
+        output[len] = input[i];
+        backTracking(i+1, len+1, vowelCnt+isVowel(input[i]));
+    }
+}
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    int L, C; cin >> L >> C;
-    int vLen = 0, cLen = 0;
-    for(int i=0; i<C; i++) {
-        char c; cin >> c;
-        if(c == 'a'|| c == 'e'|| c == 'i'|| c == 'o'|| c == 'u') 
-            vowels[vLen++] = c;
-        else consonants[cLen++] = c;
-    }
-    sort(vowels, vowels+vLen);
-    sort(consonants, consonants+cLen);
-
-    vector<string> ans;
-    for(int vCnt = max(1, L-cLen); vCnt <= min(vLen, L-2); vCnt++) {
-        int cCnt = L - vCnt;
-        int vMask[vLen], cMask[cLen];
-        for(int i=0; i<vLen; i++) vMask[i] = i < vCnt ? 0 : 1;
-        for(int i=0; i<cLen; i++) cMask[i] = i < cCnt ? 0 : 1;
-        do {
-            do {
-                string s;
-                for(int i=0; i<vLen; i++)
-                    if(!vMask[i]) s.push_back(vowels[i]);
-                for(int i=0; i<cLen; i++) 
-                    if(!cMask[i]) s.push_back(consonants[i]);
-                sort(s.begin(), s.end());
-                ans.push_back(s);
-            } while(next_permutation(cMask, cMask + cLen));
-        } while(next_permutation(vMask, vMask + vLen));
-    }
-    sort(ans.begin(), ans.end());
-    for(string s:ans)
-        cout << s << '\n';
+    cin >> L >> C;
+    for(int i=0; i<C; i++) cin >> input[i];
+    sort(input, input+C);
+    backTracking(0, 0, 0);
+	return 0;
 }
