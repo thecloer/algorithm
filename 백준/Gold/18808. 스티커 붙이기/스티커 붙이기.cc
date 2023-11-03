@@ -1,69 +1,52 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int n, m, k;
-int note[42][42];
-int r, c;
-int paper[12][12];
+struct xy {int x, y;};
+int N, M, K ,ans;
+bool laptop[40][40];
 
-void rotate(){
-  int tmp[12][12];
-  
-  for(int i = 0; i < r; i++)
-    for(int j = 0; j < c; j++)
-      tmp[i][j] = paper[i][j];
-  
-  for(int i = 0; i < c; i++)
-    for(int j = 0; j < r; j++)
-      paper[i][j] = tmp[r-1-j][i];
-
-  swap(r, c);
-}
-
-bool pastable(int x, int y){
-  for(int i = 0; i < r; i++){
-    for(int j = 0; j < c; j++){
-      if(note[x+i][y+j] == 1 && paper[i][j] == 1)
-        return false;
+void swap(int &a, int &b) { int tmp = a; a = b; b = tmp; }
+void rotate90(vector<xy> &sticker, int &R, int &C) {
+    swap(R, C);
+    for(auto &[x, y] : sticker) {
+        swap(x, y);
+        y = C - 1 - y;
     }
-  }
-  for(int i = 0; i < r; i++){
-    for(int j = 0; j < c; j++){
-      if(paper[i][j] == 1)
-        note[x+i][y+j] = 1;
-    }
-  }
-  return true;
 }
-
-int main(void) {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cin >> n >> m >> k;
-  while(k--){
-    cin >> r >> c;
-    for(int i = 0; i < r; i++)
-      for(int j = 0; j < c; j++)
-        cin >> paper[i][j];
-    
-    for(int rot = 0; rot < 4; rot++){
-      bool is_paste = false;
-      for(int x = 0; x <= n-r; x++){
-        if(is_paste) break;
-        for(int y = 0; y <= m-c; y++){
-          if(pastable(x, y)){
-            is_paste = true;
-            break;
-          }
+int main() {
+    ios::sync_with_stdio(0); cin.tie(0);
+    cin >> N >> M >> K;
+    while(K--) {
+        int R, C; cin >> R >> C;
+        vector<xy> sticker;
+        for(int r=0; r<R; r++) {
+            for(int c=0; c<C; c++) {
+                bool isSticker; cin >> isSticker;
+                if(isSticker) sticker.push_back({r, c});
+            }
         }
-      }
-      if(is_paste) break;
-      rotate();
+
+        bool sticked = false;
+        for(int rot=4; not sticked and rot--;) {
+            if(rot != 3) rotate90(sticker, R, C);
+            for(int i=0; not sticked and i<=N-R; i++) {
+                for(int j=0; not sticked and j<=M-C; j++) {
+                    bool canStick = true;
+                    for(const auto &[x, y] : sticker) {
+                        if(laptop[i+x][j+y]) {
+                            canStick = false;
+                            break;
+                        }
+                    }
+                    if(not canStick) continue;
+                    for(const auto &[x, y] : sticker) 
+                        laptop[i+x][j+y] = true;
+                    sticked = true;
+                }
+            }
+        }
+        if(sticked) ans += sticker.size();
     }
-  }
-  int cnt = 0;
-  for(int i = 0; i < n; i++)
-    for(int j = 0; j < m; j++)
-      cnt += note[i][j];
-  cout << cnt << '\n';
+    cout << ans;
 }
