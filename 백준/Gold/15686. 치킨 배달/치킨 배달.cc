@@ -7,9 +7,28 @@ inline int abs(int a) { return a < 0 ? -a : a; };
 inline int min(int a, int b) { return a < b ? a : b; };
 
 struct xy {int x, y;};
-int N, M;
+int N, M, ans = 250000;
 int board[50][50];
-vector<xy> house, chicken;
+vector<xy> house, chicken, selected;
+
+void backTracking(int cur) {
+    if(selected.size() == M) {
+        int dist = 0;
+        for(const auto &[x1, y1] : house) {
+            int d = 2501;
+            for(const auto &[x2, y2] : selected)
+                d = min(d, abs(x1 - x2) + abs(y1 - y2));
+            dist += d;
+        }
+        ans = min(ans, dist);
+        return;
+    }
+    for(int i = cur; i <= chicken.size() - M + selected.size(); i++) {
+        selected.push_back(chicken[i]);
+        backTracking(i+1);
+        selected.pop_back();
+    }
+}
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
@@ -23,23 +42,6 @@ int main() {
                 chicken.push_back({i, j});
         } 
     }
-    
-    int ans = 250000;
-    vector<int> mask(chicken.size(), 1);
-    for(int i=0; i<M; i++) mask[i] = 0;
-    do {
-        vector<xy> selected;
-        for(int i=0; i<mask.size(); i++)
-            if(mask[i] == 0) selected.push_back(chicken[i]);
-        
-        int cityDist = 0;
-        for(const auto &[x1, y1] : house) {
-            int houseDist = 2501;
-            for(const auto &[x2, y2]: selected)
-                houseDist = min(houseDist, abs(x1-x2) + abs(y1-y2));
-            cityDist += houseDist;
-        }
-        ans = min(ans, cityDist);
-    } while(next_permutation(mask.begin(), mask.end()));
+    backTracking(0);
     cout << ans;
 }
