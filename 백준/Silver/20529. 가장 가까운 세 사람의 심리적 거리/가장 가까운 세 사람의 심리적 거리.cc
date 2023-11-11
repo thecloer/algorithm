@@ -7,9 +7,9 @@ const int MAX_ANS = 8, MBTI_KIND = 16, GROUP_SIZE = 3;
 int N, ans;
 int freq[MBTI_KIND];
 int group[GROUP_SIZE];
-vector<int> MBTI;
+int MBTI[2*MBTI_KIND];
 
-int hashMBTI() {
+int getMBTI() {
     int hashed = 0;
     for(int j=0; j<4; j++) {
         char c; cin >> c;
@@ -33,20 +33,15 @@ int getDist() {
         dist += bitCount(group[i] xor group[(i+1) % GROUP_SIZE]);
     return dist;
 }
-void backTracking(int len) {
+void backTracking(int cur, int len) {
     if(len == GROUP_SIZE) {
         int dist = getDist();
         if(ans > dist) ans = dist;
         return;
     }
-    for(int i=0; i<MBTI.size(); i++) {
-        if(freq[MBTI[i]] == 0) continue;
-        int cnt = (freq[MBTI[i]]  == 2 && len < 2) ? 2 : 1;
-        for(int j=0; j<cnt; j++)
-            group[len+j] = MBTI[i];
-        freq[MBTI[i]] -= cnt;
-        backTracking(len+cnt);
-        freq[MBTI[i]] += cnt;
+    for(int i = cur; i <= N - GROUP_SIZE + len; i++) {
+        group[len] = MBTI[i];
+        backTracking(i+1, len+1);
     }
 }
 int main() {
@@ -54,20 +49,17 @@ int main() {
     int T; cin >> T;
     while(T--) {
         ans = MAX_ANS;
-        MBTI.clear();
         for(int i=0; i<MBTI_KIND; i++) freq[i] = 0;
-        
-        cin >> N;
-        for(int i=0; i<N; i++) freq[hashMBTI()]++;
-        for(int i=0; i<MBTI_KIND; i++) {
-            if(freq[i] > 2) {
-                ans = 0;
-                break;
-            }
-            if(freq[i]) MBTI.push_back(i);
 
+        cin >> N;
+        if(N > 2*MBTI_KIND) ans = 0;
+        for(int i=0; i<N; i++) freq[getMBTI()]++;
+        for(int i=0, k=0; i<MBTI_KIND and ans > 0; i++) {
+            if(freq[i] == 0) continue;
+            if(freq[i] > 2) ans = 0;
+            else while(freq[i]--) MBTI[k++] = i;
         }
-        if(ans == MAX_ANS) backTracking(0);
+        if(ans) backTracking(0, 0);
         cout << ans << '\n';
     }
 }
