@@ -1,21 +1,19 @@
 #include <iostream>
-#include <string>
-#include <vector>
 using namespace std;
 const int MAX_ANS = 8, MBTI_KIND = 16, GROUP_SIZE = 3;
+const char HASH_MAP[] = {'E', 'N', 'T', 'J'};
 
 int N, ans;
-int freq[MBTI_KIND];
-int group[GROUP_SIZE];
 int MBTI[2*MBTI_KIND];
+int group[GROUP_SIZE];
 
-int getMBTI() {
+int min(const int &a, const int &b) {return a < b ? a : b;}
+int getHashedMBTI() {
     int hashed = 0;
-    for(int j=0; j<4; j++) {
+    for(int i=0; i<4; i++) {
         char c; cin >> c;
         hashed <<= 1;
-        if(c == 'E' || c == 'N' || c == 'T' || c == 'J')
-            hashed += 1;
+        if(c == HASH_MAP[i]) hashed++;
     }
     return hashed;
 }
@@ -34,9 +32,9 @@ int getDist() {
     return dist;
 }
 void backTracking(int cur, int len) {
+    if(ans < 2) return;
     if(len == GROUP_SIZE) {
-        int dist = getDist();
-        if(ans > dist) ans = dist;
+        ans = min(ans, getDist());
         return;
     }
     for(int i = cur; i <= N - GROUP_SIZE + len; i++) {
@@ -48,18 +46,16 @@ int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     int T; cin >> T;
     while(T--) {
-        ans = MAX_ANS;
-        for(int i=0; i<MBTI_KIND; i++) freq[i] = 0;
-
         cin >> N;
-        if(N > 2*MBTI_KIND) ans = 0;
-        for(int i=0; i<N; i++) freq[getMBTI()]++;
-        for(int i=0, k=0; i<MBTI_KIND and ans > 0; i++) {
+        ans = (N > 2*MBTI_KIND) ? 0 : MAX_ANS;
+        int freq[MBTI_KIND] = {};
+        for(int i=0; i<N; i++) freq[getHashedMBTI()]++;
+        for(int i=0, k=0; i<MBTI_KIND and ans; i++) {
             if(freq[i] == 0) continue;
             if(freq[i] > 2) ans = 0;
             else while(freq[i]--) MBTI[k++] = i;
         }
-        if(ans) backTracking(0, 0);
+        backTracking(0, 0);
         cout << ans << '\n';
     }
 }
