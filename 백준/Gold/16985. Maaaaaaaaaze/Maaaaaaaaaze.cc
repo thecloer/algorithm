@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <queue>
 using namespace std;
+const int MAX_DIST = 125;
 
 struct lxy {int l, x, y;};
 bool maze[5][5][5];
@@ -23,10 +24,12 @@ void rotate90(int stage) {
             maze[stage][y][4-x] = tmp[x][y];
 }
 int bfs() {
+    if(!(maze[level[0]][0][0] && maze[level[4]][4][4]))
+        return MAX_DIST;
     bool vis[5][5][5] = {};
+    vis[0][0][0] = true;
     queue<lxy> Q;
     Q.push({0, 0, 0});
-    vis[0][0][0] = true;
     int dist = 0;
     while(!(Q.empty() || vis[4][4][4])) {
         dist++;
@@ -44,7 +47,7 @@ int bfs() {
             }
         }
     }
-    return vis[4][4][4] ? dist : -1;
+    return vis[4][4][4] ? dist : MAX_DIST;
 }
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
@@ -53,7 +56,7 @@ int main() {
             for(int k=0; k<5; k++)
                 cin >> maze[i][j][k];
     
-    int ans = -1;
+    int ans = MAX_DIST;
     for(int rot = 0; rot < 1024; rot++) {
         int dirs[5];
         int tmp = rot;
@@ -66,16 +69,12 @@ int main() {
                 rotate90(stage);
         
         do {
-            if(maze[level[0]][0][0] && maze[level[4]][4][4]) {
-                int dist = bfs();
-                if(dist < 0) continue;
-                ans = (ans == -1) ? dist : min(ans, dist);
-            }
+            ans = min(ans, bfs());
         } while(next_permutation(level, level+5));
 
         for(int stage = 0; stage < 5; stage++)
             for(int i=0; dirs[stage] && i < 4-dirs[stage]; i++)
                 rotate90(stage);
     }
-    cout << ans;
+    cout << (ans == MAX_DIST ? -1 : ans);
 }
