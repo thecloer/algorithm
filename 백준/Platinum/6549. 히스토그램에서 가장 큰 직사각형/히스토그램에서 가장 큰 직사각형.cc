@@ -14,15 +14,15 @@ int main() {
         stack<rect> S;
         ll ans = 0;
         for(int i=0; i<=n; i++){
-            int x = 0, idx = i;
-            if(i != n) cin >> x;
-            while(!S.empty() && S.top().h > x) {
+            int h = 0, idx = i;
+            if(i != n) cin >> h;
+            while(!S.empty() && S.top().h > h) {
                 idx = S.top().idx;
                 ans = max(ans, (ll)S.top().h * (i - idx));
                 S.pop();
             }
-            if(S.empty() || S.top().h != x)
-                S.push({idx, x});
+            if(S.empty() || S.top().h < h)
+                S.push({idx, h});
         }
         cout << ans << '\n';
     }
