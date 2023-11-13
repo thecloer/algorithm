@@ -1,17 +1,18 @@
 #include <iostream>
 #include <string>
-#include <map>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    int N; cin >> N;
-    map<string, bool> office;
-    while(N--) {
-        string name, action; cin >> name >> action;
-        if(action == "enter") office[name] = true;
-        else office[name] = false;
+    int n; cin >> n;
+    vector<string> v(n);
+    string tmp;
+    for(auto &name:v) cin >> name >> tmp;
+    sort(v.rbegin(), v.rend());
+    for(int i=0; i<n; i++) {
+        if(i != n-1 && v[i] == v[i+1]) i++;
+        else cout << v[i] << '\n';
     }
-    for(auto iter=office.rbegin(); iter != office.rend(); iter++) 
-        if(iter->second) cout << iter->first << '\n';
 }
