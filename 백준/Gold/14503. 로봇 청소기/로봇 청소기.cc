@@ -2,22 +2,17 @@
 using namespace std;
 
 int N, M, x, y, d, cnt;
-bool board[50][50];
+bool isWall[50][50];
 bool isClean[50][50];
-
 int dx[] = {-1, 0, 1, 0};
 int dy[] = {0, 1, 0, -1};
 
-bool isWall(int nx, int ny) {
-    return board[nx][ny];
-    // return nx<0 || nx>=N || ny<0 || ny>=M || board[nx][ny];
-}
 void move(int nx, int ny) { x = nx; y = ny; }
 void clean() { isClean[x][y] = true; cnt++; }
 bool isCleanAround() {
     for(int dir=4; dir--;) {
         int nx = x + dx[dir], ny = y + dy[dir];
-        if(isWall(nx, ny)) continue;
+        if(isWall[nx][ny]) continue;
         if(not isClean[nx][ny]) return false;
     }
     return true;
@@ -27,14 +22,14 @@ int main() {
     cin >> N >> M >> x >> y >> d;
     for(int i=0; i<N; i++)
         for(int j=0; j<M; j++)
-            cin >> board[i][j];
+            cin >> isWall[i][j];
     while(true) {
         if(not isClean[x][y]) clean();
         if(isCleanAround()) {
             int backDir = (d + 2) % 4;
             int nx = x + dx[backDir];
             int ny = y + dy[backDir];
-            if(isWall(nx, ny)) break;
+            if(isWall[nx][ny]) break;
             move(nx, ny);
         } else {
             int nx, ny;
@@ -42,7 +37,7 @@ int main() {
                 d = (--d + 4) % 4;
                 nx = x + dx[d];
                 ny = y + dy[d];
-            } while(isWall(nx, ny) or isClean[nx][ny]);
+            } while(isWall[nx][ny] or isClean[nx][ny]);
             move(nx, ny);
         }
     }
