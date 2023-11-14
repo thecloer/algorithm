@@ -1,96 +1,82 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-struct xy {int x, y;};
-int N, M, n, m;
-char original[10][10];
-char board[10][10];
-char tmp[10][10];
-xy red, blue;
+#define X first
+#define Y second
 
-void copyToBoard() {
-    n = N; m = M;
-    for(int i=0; i<N; i++) {
-        for(int j=0; j<M; j++) {
-            if(original[i][j] == 'R') {
-                red = {i, j};
-                board[i][j] = '#';
-            }
-            else if(original[i][j] == 'B') {
-                blue = {i, j};
-                board[i][j] = '#';
-            }
-            else board[i][j] = original[i][j];
-        }
-    }
-}
-void swap(int &a, int &b) {
-    int c = a; a = b; b = c;
-}
-void rotate90() {
-    for(int x=0; x<n; x++)
-        for(int y=0; y<m; y++)
-            tmp[x][y] = board[x][y];
-    for(int x=0; x<n; x++)
-        for(int y=0; y<m; y++)
-            board[y][n-1-x] = tmp[x][y];
-    swap(blue.x, blue.y);
-    blue.y = n-1-blue.y;
-    swap(red.x, red.y);
-    red.y = n-1-red.y;
-    swap(n, m);
-}
-bool isNextWall(xy &ball) {return board[ball.x][ball.y - 1] == '#';}
-bool isNextEmpty(xy &ball) {return board[ball.x][ball.y - 1] == '.';}
-bool isNextHole(xy &ball) {return board[ball.x][ball.y - 1] == 'O';}
-void move(xy &ball) {
-    board[ball.x][ball.y] = '.';
-    board[ball.x][--ball.y] = '#';
-}
-void out(xy &ball) {
-    board[ball.x][ball.y] = '.';
-}
+int n, m;
+pair<int,int> red, blue;
+string board[11];
+int dist[11][11][11][11]; 
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {1, 0, -1, 0};
 
-int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    cin >> N >> M;
-    for(int i=0; i<N; i++)
-        for(int j=0; j<M; j++)
-            cin >> original[i][j];
-    
-    int ans = -1;
-    for(int brute = 0; brute < (1<<20); brute++) {
-        copyToBoard();
-        int cur = brute;
-        for(int t = 1; t <= 10; t++) {
-            int rot = cur & 3;
-            cur >>= 2;
-            for(int i = 0; i < rot; i++) rotate90();
-            bool isRedOut = false, isBlueOut = false;
-            while(true) {
-                if(!isBlueOut) {
-                    if(isNextEmpty(blue)) move(blue);
-                    else if(isNextHole(blue)) {
-                        out(blue);
-                        isBlueOut = true;
-                    }
-                }
-                if(!isRedOut) {
-                    if(isNextEmpty(red)) move(red);
-                    else if(isNextHole(red)) {
-                        out(red);
-                        isRedOut = true;
-                    }
-                }
-                if(isNextWall(red) && isNextWall(blue)) break;
-                if(isRedOut && isNextWall(blue)) break;
-                if(isNextWall(red) && isBlueOut) break;
-                if(isRedOut && isBlueOut) break;
-            }
-            if(isRedOut && !isBlueOut && (ans == -1 || ans > t))
-                    ans = t;
-            if(isRedOut || isBlueOut) break;
-        }
+int bfs() {
+  queue<tuple<int, int, int, int>> q;
+  q.push({red.X, red.Y, blue.X, blue.Y});
+  dist[red.X][red.Y][blue.X][blue.Y] = 0;
+  while (!q.empty()) {
+    int rx, ry, bx, by;
+    tie(rx, ry, bx, by) = q.front();
+    q.pop();
+    int cnt = dist[rx][ry][bx][by];
+    if (cnt >= 10)
+      return -1;
+    for (int i = 0; i < 4; i++) {
+      int n_rx = rx, n_ry = ry, n_bx = bx, n_by = by;
+
+      while (board[n_bx + dx[i]][n_by + dy[i]] == '.'){
+        n_bx += dx[i];
+        n_by += dy[i];
+      }
+      if(board[n_bx + dx[i]][n_by + dy[i]] == 'O') continue;
+
+      while (board[n_rx + dx[i]][n_ry + dy[i]] == '.'){
+        n_rx += dx[i];
+        n_ry += dy[i];
+      }
+      if(board[n_rx + dx[i]][n_ry + dy[i]] == 'O') return cnt+1;
+
+      if ((n_rx == n_bx) && (n_ry == n_by)) {
+        if (i == 0) // 위쪽
+          ry < by ? n_ry-- : n_by--;
+        else if (i == 1) // 오른쪽
+          rx < bx ? n_rx-- : n_bx--;
+        else if (i == 2) // 아래쪽
+          ry > by ? n_ry++ : n_by++;
+        else // 왼쪽
+          rx > bx ? n_rx++ : n_bx++;
+      }
+      if (dist[n_rx][n_ry][n_bx][n_by] != -1) continue;
+      dist[n_rx][n_ry][n_bx][n_by] = cnt + 1;
+      q.push({n_rx, n_ry, n_bx, n_by});
     }
-    cout << ans;
+  }
+  return -1;
+}
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  for(int i = 0; i < 10; i++)
+    for(int j = 0; j < 10; j++)
+      for(int k = 0; k < 10; k++)
+        fill(dist[i][j][k], dist[i][j][k]+10, -1);
+  
+  cin >> n >> m;
+  for (int i = 0; i < n; i++) {
+    cin >> board[i];
+    for (int j = 0; j < m; j++) {      
+      if (board[i][j] == 'B'){
+        blue = {i, j};
+        board[i][j] = '.';
+      }
+      else if (board[i][j] == 'R'){
+        red = {i, j};
+        board[i][j] = '.';
+      }
+    }
+  }
+  
+  cout << bfs();
 }
