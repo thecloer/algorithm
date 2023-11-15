@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 const int MAX_DIST = 25000001;
 
@@ -46,7 +45,7 @@ int main() {
             cin >> S >> E >> T;
             if(weight[S][E] > -T) weight[S][E] = -T;
         }
-        
+
         bool hasMinusCycle = false;
         for(int start=1; start<=N and not hasMinusCycle; start++)
             if(not vis[start]) hasMinusCycle = bellmanFord(start);
