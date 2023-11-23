@@ -5,12 +5,8 @@ using namespace std;
 string arr[20000], tmp[20000];
 
 bool cmp(const string &a, const string &b) {
-    if(a.length() != b.length()) return a.length() < b.length();
-    for(int i = 0; i < (int)a.length(); i++) {
-        if(a[i] == b[i]) continue;
-        return a[i] < b[i];
-    }
-    return true;
+    if(a.length() == b.length()) return a < b;
+    return a.length() < b.length();
 }
 
 void mergeSort(int start, int end) {
