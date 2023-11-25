@@ -4,17 +4,12 @@
 using namespace std;
 
 struct xy {int x, y;};
-struct association {
-    int tot;
-    vector<xy> nations;
-};
 int N, L, R;
-int board[50][50];
-int vis[50][50];
+int board[50][50], vis[50][50];
 int dx[] = {1, 0, -1, 0};
 int dy[] = {0, 1, 0, -1};
 
-association getAssociation(int startX, int startY, int mark) {
+bool migrate(int startX, int startY, int mark) {
     int tot = 0;
     vector<xy> nations;
 
@@ -37,25 +32,21 @@ association getAssociation(int startX, int startY, int mark) {
         }
     }
 
-    if(not nations.empty()) {
-        tot += board[startX][startY];
-        nations.push_back({startX, startY});
-    }
-    return {tot, nations};
-}
-bool migrate(const association &assoc) {
-    if(assoc.nations.empty()) return false;
-    int pop = assoc.tot / assoc.nations.size();
-    for(const auto &[x, y]:assoc.nations) board[x][y] = pop;
+    if(nations.empty()) return false;
+    
+    tot += board[startX][startY];
+    nations.push_back({startX, startY});
+
+    int pop = tot / nations.size();
+    for(const auto &[x, y]:nations) board[x][y] = pop;
     return true;
 }
-bool updateAssociation(int mark) {
+bool findNewAssociation(int mark) {
     bool isUpdated = false;
     for(int x=0; x<N; x++) {
         for(int y=0; y<N; y++) {
             if(vis[x][y] == mark) continue;
-            if(migrate(getAssociation(x, y, mark)))
-                isUpdated = true;
+            if(migrate(x, y, mark)) isUpdated = true;
         }
     }
     return isUpdated;
@@ -69,6 +60,6 @@ int main() {
             cin >> board[i][j];
 
     int day = 0;
-    while(updateAssociation(day + 1)) day++;
+    while(findNewAssociation(day + 1)) day++;
     cout << day;
 }
