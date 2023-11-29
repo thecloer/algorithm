@@ -10,8 +10,10 @@ int N, M;
 int board[50][50];
 bool vis[50][50];
 vector<xy> available;
+queue<xy> Q;
 int dx[] = {1, 0, -1, 0};
 int dy[] = {0, 1, 0, -1};
+int mask[10];
 
 bool isSuccess() {
     for(int i=0; i<N; i++)
@@ -20,7 +22,7 @@ bool isSuccess() {
                 return false;
     return true;
 }
-int bfs(queue<xy> &Q) {
+int bfs() {
     int sec = -1;
     while(not Q.empty()) {
         sec++;
@@ -28,9 +30,9 @@ int bfs(queue<xy> &Q) {
             const auto &[x, y] = Q.front(); Q.pop();
             for(int d=4; d--;) {
                 int nx = x + dx[d], ny = y + dy[d];
-                if(nx<0 || nx>=N || ny<0 || ny>=N) continue;
+                if(nx<0 or nx>=N or ny<0 or ny>=N) continue;
                 if(board[nx][ny] == 1 or vis[nx][ny]) continue;
-                vis[nx][ny]= true;
+                vis[nx][ny] = true;
                 Q.push({nx, ny});
             }
         }
@@ -48,8 +50,6 @@ int main() {
                 available.push_back({i, j});
         }
     }
-    int mask[available.size()];
-    for(int i=0; i<M; i++) mask[i] = 0;
     for(int i=M; i<available.size(); i++) mask[i] = 1;
 
     int ans = MAX_VALUE;
@@ -57,7 +57,7 @@ int main() {
         for(int i=0; i<N; i++)
             for(int j=0; j<N; j++)
                 vis[i][j] = false;
-        queue<xy> Q;
+        
         for(int i=0; i<available.size(); i++) {
             if(mask[i]) continue;
             const auto &[x, y] = available[i];
@@ -65,7 +65,7 @@ int main() {
             vis[x][y] = true;
         }
 
-        int sec = bfs(Q);
+        int sec = bfs();
         if(isSuccess()) ans = min(ans, sec);
     } while(next_permutation(mask, mask+available.size()));
 
