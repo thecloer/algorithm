@@ -58,13 +58,13 @@ int main() {
             for(int j=0; j<N; j++)
                 vis[i][j] = false;
         queue<xy> Q;
-        for(int i=0; i<N; i++)
         for(int i=0; i<available.size(); i++) {
             if(mask[i]) continue;
             const auto &[x, y] = available[i];
             Q.push({x, y});
             vis[x][y] = true;
         }
+
         int sec = bfs(Q);
         if(isSuccess()) ans = min(ans, sec);
     } while(next_permutation(mask, mask+available.size()));
