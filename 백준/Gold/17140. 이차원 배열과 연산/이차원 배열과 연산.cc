@@ -3,12 +3,10 @@
 #include <unordered_map>
 #include <algorithm>
 using namespace std;
-const int SIZE_LIMIT = 100;
 
 int R, C, K;
-int rowSize = 3, colSize = 3, sec;
-int matrix[SIZE_LIMIT][SIZE_LIMIT];
-int tmp[SIZE_LIMIT];
+int rowSize = 3, colSize = 3;
+int matrix[100][100];
 
 void operateR() {
     int maxLen = 0;
@@ -66,9 +64,11 @@ int main() {
     for(int i=0; i<rowSize; i++)
         for(int j=0; j<colSize; j++)
             cin >> matrix[i][j];
-    while(matrix[R][C] != K and ++sec < 101) {
+
+    int sec = 0;
+    while(matrix[R][C] != K and ++sec <= 100) {
         if(rowSize < colSize) operateC();
         else operateR();
     }
-    cout << (sec == 101 ? -1 : sec);
+    cout << (sec > 100 ? -1 : sec);
 }
