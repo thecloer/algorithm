@@ -11,7 +11,7 @@ inline int fnd(int x) {
     return parent[x] ? (parent[x] = fnd(parent[x])) : x;
 }
 inline void uni(int a, int b) {
-    parent[fnd(b)] = fnd(a);
+    parent[fnd(a)] = fnd(b);
 }
 
 int main() {
