@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <queue>
 #include <algorithm>
 using namespace std;
@@ -52,9 +51,9 @@ int main() {
         return 0;
     }
 
-    for(int i=M; i<virus.size(); i++) mask[i] = true;
-
     int ans = MAX_DIST, mark = 0;
+    for(int i=M; i<virus.size(); i++) mask[i] = true;
+    
     do {
         mark++;
         queue<xy> Q;
@@ -66,5 +65,6 @@ int main() {
         int sec = bfs(Q, mark);
         if(sec != -1) ans = min(ans, sec);
     } while(next_permutation(mask, mask+virus.size()));
+
     cout << (ans == MAX_DIST ? -1 : ans);
 }
