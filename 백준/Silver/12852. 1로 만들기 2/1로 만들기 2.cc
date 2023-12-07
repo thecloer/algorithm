@@ -1,33 +1,21 @@
 #include <iostream>
-#include <queue>
 using namespace std;
 
 int dist[1000001];
-int pre[1000001];
-queue<pair<int,int>> Q;
+int pre[1000001] {0, 1};
 
-void enqueue(int x, int nx, int nd) {
-    if(dist[nx] and dist[nx] <= nd) return;
-    Q.push({nx, nd});
-    dist[nx] = nd;
-    pre[nx] = x;
+void move(int from, int to) {
+    dist[to] = dist[from] + 1;
+    pre[to] = from;
 }
-
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     int N; cin >> N;
-    Q.push({N, 0});
-    pre[N] = N;
-    while(not Q.empty()) {
-        const auto [x, d] = Q.front(); Q.pop();
-        int nd = d + 1;
-        if(x % 3 == 0) enqueue(x, x / 3, nd);
-        if((x & 1) == 0) enqueue(x, x / 2, nd);
-        if(x > 1) enqueue(x, x -1, nd);
+    for(int x=2; x<=N; x++) {
+        move(x-1, x);
+        if(x % 3 == 0 and dist[x/3] + 1 < dist[x]) move(x/3, x);
+        if((x & 1) == 0 and dist[x >> 1] + 1 < dist[x]) move(x >> 1, x);
     }
-    cout << dist[1] << '\n';
-    int path[dist[1]+1];
-    path[0] = N;
-    for(int x=1, i=dist[1]; pre[x] != x; x = pre[x]) path[i--] = x;
-    for(int x:path) cout << x << ' ';
+    cout << dist[N] << '\n';
+    for(int x=N; (cout << x << ' ', x != pre[x]); x = pre[x]);
 }
