@@ -1,17 +1,19 @@
 #include <iostream>
-#include <set>
+// #include <unordered_set>
 using namespace std;
 
 struct xy {int x, y;};
 int R, C, ans;
 int board[21][21];
-set<int> vis[21][21];
+int vis[21][21];
 int dx[] = {1, 0, -1, 0};
 int dy[] = {0, 1, 0, -1};
 
 void backTracking(int x, int y, int cnt, int bit) {
     bit |= 1 << board[x][y];
-    if(not vis[x][y].insert(bit).second) return;
+    // if(not vis[x][y].insert(bit).second) return;
+    if(vis[x][y] == bit) return;
+    vis[x][y] = bit;
     bool isLeaf = true;
     for(int dir = 4; dir--;) {
         int nx = x + dx[dir], ny = y + dy[dir];
