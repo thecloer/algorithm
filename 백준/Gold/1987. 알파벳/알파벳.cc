@@ -1,5 +1,4 @@
 #include <iostream>
-// #include <unordered_set>
 using namespace std;
 
 struct xy {int x, y;};
@@ -11,9 +10,9 @@ int dy[] = {0, 1, 0, -1};
 
 void backTracking(int x, int y, int cnt, int bit) {
     bit |= 1 << board[x][y];
-    // if(not vis[x][y].insert(bit).second) return;
     if(vis[x][y] == bit) return;
     vis[x][y] = bit;
+    
     bool isLeaf = true;
     for(int dir = 4; dir--;) {
         int nx = x + dx[dir], ny = y + dy[dir];
@@ -35,7 +34,6 @@ int main() {
             board[i][j] = c - 'A';
         }
     }
-    
     backTracking(0, 0, 1, 0);
     cout << ans;
 }
