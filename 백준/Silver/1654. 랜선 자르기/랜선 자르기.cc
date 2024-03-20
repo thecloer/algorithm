@@ -8,7 +8,7 @@ int wires[10000];
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     cin >> K >> N;
-    ll s = 0, e = 0, m = 0;
+    ll s = 0, e, m;
     for(int i=0; i<K; i++) {
         cin >> wires[i];
         if(wires[i] > e) e = wires[i];
