@@ -10,8 +10,9 @@ int dx[] = {1, 0, -1, 0};
 int dy[] = {0, 1, 0, -1};
 
 void dfs(int x, int y, int dist) {
-    if(x == 1 and y == C and dist == K) {
-        ans++;
+    if(dist > K) return;
+    if(x == 1 and y == C) {
+        if(dist == K) ans++;
         return;
     }
 
