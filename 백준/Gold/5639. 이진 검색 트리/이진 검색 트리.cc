@@ -9,7 +9,7 @@ inline int makeNode(int val) {
     return len;
 }
 void push(int node, int val) {
-    if(V[ROOT] == 0) {
+    if(V[node] == 0) {
         makeNode(val);
         return;
     }
