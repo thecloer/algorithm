@@ -14,7 +14,7 @@ void backtracking(color c, int cur, int cnt) {
         if(cnt > ans[c]) ans[c] = cnt;
         return;
     }
-    // if(cnt + B[c].size() - cur < ans[c]) return;
+    if(cnt + B[c].size() - cur < ans[c]) return;
 
     if(diag[c][0][B[c][cur].x + B[c][cur].y] or diag[c][1][B[c][cur].x - B[c][cur].y + n]) {
         backtracking(c, cur+1, cnt);
