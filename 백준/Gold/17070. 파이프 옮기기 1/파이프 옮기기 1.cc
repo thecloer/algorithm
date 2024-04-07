@@ -1,47 +1,26 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-int N, ans;
-bool wall[17][17];
-int dx[] {0, 1, 1}; // direction -> delta position
-int dy[] {1, 1, 0}; // direction -> delta position
-vector<int> nxt[] {{0, 1}, {0, 1, 2}, {1, 2}}; // current direction -> next directions
-vector<int> check[] {{0}, {0, 1, 2}, {2}}; // next direction -> check delta positions
-
-inline bool isValid(int x, int y) {
-    return x < N and y < N and not wall[x][y];
-}
-
-void move(int dir, int x, int y) {
-    if(x == N-1 and y == N-1) {
-        ans++;
-        return;
-    }
-
-    for(int nd:nxt[dir]) {
-        int nx = x + dx[nd], ny = y + dy[nd];
-        if(not isValid(nx, ny)) continue;
-        
-        bool pass = true;
-        for(int d:check[nd]) {
-            if(isValid(x + dx[d], y + dy[d])) continue;
-            pass = false;
-            break;
-        }
-
-        if(not pass) continue;
-        move(nd, nx, ny);
-    }
-}
+int N;
+bool isWall[18][18];
+int way[18][18][3];
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     cin >> N;
-    for(int i=0; i<N; i++)
-        for(int j=0; j<N; j++)
-            cin >> wall[i][j];
+    for(int i=1; i<=N; i++)
+        for(int j=1; j<=N; j++)
+            cin >> isWall[i][j];
     
-    move(0, 0, 1);
-    cout << ans;
+    way[1][2][0] = 1;
+    for(int x=1; x<=N; x++) {
+        for(int y=1; y<=N; y++) {
+            if(isWall[x][y]) continue;
+            way[x][y][0] += way[x][y-1][0] + way[x][y-1][1];
+            way[x][y][2] += way[x-1][y][1] + way[x-1][y][2];
+            if(isWall[x-1][y] or isWall[x][y-1]) continue;
+            way[x][y][1] += way[x-1][y-1][0] + way[x-1][y-1][1] + way[x-1][y-1][2];
+        }
+    }
+    cout << way[N][N][0] + way[N][N][1] + way[N][N][2];
 }
