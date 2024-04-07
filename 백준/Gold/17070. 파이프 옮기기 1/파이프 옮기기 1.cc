@@ -2,8 +2,8 @@
 using namespace std;
 
 int N;
-bool isWall[18][18];
-int way[18][18][3];
+bool isWall[17][17];
+int way[17][17][3];
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
