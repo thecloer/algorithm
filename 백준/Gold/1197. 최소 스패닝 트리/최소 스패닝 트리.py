@@ -1,27 +1,27 @@
 import sys
-import heapq
 readline = sys.stdin.readline
 
+def find(x):
+    if parents[x] == x:
+        return x
+    parents[x] = find(parents[x])
+    return parents[x]
+
 V, E = map(int, readline().split())
-adj = [[] for _ in range(V + 1)]
+edges = [tuple(map(int, readline().split())) for _ in range(E)]
+edges.sort(key= lambda x : x[2])
 
-for _ in range(E):
-    a, b, c = map(int, readline().split())
-    adj[a].append((c, b))
-    adj[b].append((c, a))
-
-ans = cnt = 0
-vis = [False] * (V + 1)
-heap = [(0, 1)]
-while cnt < V:
-    w, x = heapq.heappop(heap)
-    if vis[x]:
+parents = [i for i in range(V+1)]
+cnt = 0
+ans = 0
+for a, b, w in edges:
+    A, B = find(a), find(b)
+    if A == B:
         continue
-    vis[x] = True
+    parents[A] = B
     cnt += 1
     ans += w
-    for pair in adj[x]:
-        if not vis[pair[1]]:
-            heapq.heappush(heap, pair)
+    if cnt == V - 1:
+        break
 
 print(ans)
